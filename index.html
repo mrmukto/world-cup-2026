@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 2026 · Live Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a1124; --bg2:#0e1730; --panel:#141f3d; --panel2:#1b2950;
+    --line:#26345e; --ink:#eaf0ff; --muted:#8b9bc4; --faint:#5a6a96;
+    --gold:#f5c451; --gold-dim:#caa23c; --green:#28c08a; --red:#ff5d6c;
+    --live:#ff4757;
+    --r:14px; --shadow:0 8px 30px rgba(0,0,0,.35);
+    --display:'Barlow Condensed',sans-serif; --body:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{height:100%}
+  body{margin:0;min-height:100%;overflow-x:hidden}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #16224a 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #122044 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);
+    background:linear-gradient(180deg, rgba(10,17,36,.92), rgba(10,17,36,.7));
+    border-bottom:1px solid var(--line);
+  }
+  .bar{max-width:1280px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+  .brand .mark{
+    width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:22px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-dim));box-shadow:0 6px 18px rgba(245,196,81,.25)}
+  .brand h1{font-family:var(--display);font-weight:700;font-size:25px;letter-spacing:.5px;margin:0;line-height:1}
+  .brand .sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+  .updated{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(40,192,138,.6);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(40,192,138,.55)}70%{box-shadow:0 0 0 9px rgba(40,192,138,0)}100%{box-shadow:0 0 0 0 rgba(40,192,138,0)}}
+
+  select{
+    appearance:none;background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    border-radius:9px;padding:8px 30px 8px 12px;font-family:var(--body);font-size:13px;cursor:pointer;
+    background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+    background-position:calc(100% - 16px) 16px,calc(100% - 11px) 16px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  select:focus{outline:2px solid var(--gold);outline-offset:1px}
+
+  /* ---------- Tabs ---------- */
+  .tabs{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;gap:6px}
+  .tab{
+    font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:.5px;
+    padding:13px 20px 11px;color:var(--muted);cursor:pointer;border:none;background:none;position:relative}
+  .tab.active{color:var(--ink)}
+  .tab.active::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--gold)}
+  .tab:hover{color:var(--ink)}
+
+  main{max-width:1280px;margin:0 auto;padding:22px 20px 0}
+  #view-groups{padding-bottom:48px}
+
+  /* ---------- Group stage ---------- */
+  .groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+  .gcard{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .gcard h3{
+    margin:0;padding:11px 15px;font-family:var(--display);font-size:17px;letter-spacing:1px;
+    background:var(--panel2);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+  .gcard h3 .badge{margin-left:auto;font-size:10px;color:var(--faint);font-family:var(--body);letter-spacing:1px;font-weight:600}
+  table.standings{width:100%;border-collapse:collapse;font-size:13px}
+  table.standings th{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;font-weight:600;padding:8px 6px;text-align:center}
+  table.standings th.tname{text-align:left;padding-left:14px}
+  table.standings td{padding:9px 6px;text-align:center;border-top:1px solid rgba(38,52,94,.5)}
+  table.standings td.tname{text-align:left;padding-left:14px;display:flex;align-items:center;gap:9px}
+  table.standings td .flag{font-size:17px;width:22px}
+  table.standings td .rank{width:16px;color:var(--faint);font-size:11px}
+  .qual td{position:relative}
+  tr.q1 td:first-child::before,tr.q2 td:first-child::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green)}
+  tr.q3 td:first-child::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+  .pts{font-weight:700;color:var(--gold)}
+
+  /* ---------- Bracket ---------- */
+  .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+  .zbtn{width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+        font-size:18px;cursor:pointer;display:grid;place-items:center;transition:.15s}
+  .zbtn:hover{background:var(--panel2);border-color:var(--gold)}
+  .hint{font-size:12px;color:var(--muted);margin-left:6px}
+  .stage-pill{font-family:var(--display);font-size:13px;letter-spacing:1px;color:var(--faint);
+              border:1px solid var(--line);border-radius:20px;padding:5px 12px}
+
+  /* full-bleed: break out of main's max-width so the bracket can use the whole window.
+     Height is set by JS (sizeViewport) to fill down to the bottom of the screen. */
+  .viewport{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+            height:80vh;background:linear-gradient(180deg,#0c1430,#0a1124);
+            overflow:hidden;cursor:grab;touch-action:none}
+  .viewport.grabbing{cursor:grabbing}
+  .canvas{position:absolute;left:0;top:0;transform-origin:0 0}
+  svg.links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;transform-origin:0 0}
+  .round-label{position:absolute;font-family:var(--display);font-size:15px;letter-spacing:2px;color:var(--faint);text-transform:uppercase}
+
+  .match{
+    position:absolute;width:230px;background:linear-gradient(180deg,var(--panel),var(--bg2));
+    border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);overflow:hidden}
+  .match .mtime{font-size:10.5px;color:var(--muted);padding:6px 11px;border-bottom:1px solid rgba(38,52,94,.6);letter-spacing:.3px;display:flex;gap:6px;align-items:center}
+  .match .mtime .vn{margin-left:auto;color:var(--faint)}
+  .row{display:flex;align-items:center;gap:9px;padding:8px 11px;cursor:default;transition:background .12s}
+  .row+.row{border-top:1px solid rgba(38,52,94,.45)}
+  .row:hover{background:rgba(245,196,81,.07)}
+  .row .flag{font-size:18px;width:23px;text-align:center}
+  .row .nm{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row .nm.tbd{color:var(--faint);font-style:italic;font-weight:400}
+  .row .sc{margin-left:auto;font-weight:700;font-size:14px;min-width:18px;text-align:right}
+  .row.win .nm{color:#fff}.row.win .sc{color:var(--green)}
+  .row.lose{opacity:.55}
+  .match.live{border-color:var(--live)}
+  .match.live .mtime{color:var(--live)}
+  .live-tag{background:var(--live);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;letter-spacing:.5px}
+
+  /* tooltip */
+  #tip{position:fixed;z-index:50;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;
+       background:var(--panel2);border:1px solid var(--gold);border-radius:11px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.5);max-width:240px}
+  #tip.show{opacity:1;transform:translateY(0)}
+  #tip .th{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  #tip .th .fl{font-size:26px}
+  #tip .th .nm{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.5px}
+  #tip .meta{font-size:12px;color:var(--muted);line-height:1.7}
+  #tip .meta b{color:var(--ink);font-weight:600}
+  #tip .chip{display:inline-block;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:11px;color:var(--gold);margin-right:4px}
+
+  .site-footer{position:fixed;right:14px;bottom:12px;z-index:40;font-size:12px;color:var(--muted);
+               background:rgba(12,20,48,.72);backdrop-filter:blur(6px);
+               border:1px solid var(--line);border-radius:20px;padding:6px 14px;
+               box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .site-footer a{color:var(--gold);text-decoration:none;font-weight:600}
+  .site-footer a:hover{text-decoration:underline}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  .loading{text-align:center;padding:80px 20px;color:var(--muted)}
+  @media (max-width:600px){
+    .brand h1{font-size:21px}.tab{font-size:16px;padding:11px 13px}
+    main{padding:16px 12px 50px}.bar{padding:12px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">
+      <div class="mark">⚽</div>
+      <div>
+        <h1>WORLD CUP 2026</h1>
+        <div class="sub">USA · Canada · Mexico</div>
+      </div>
+    </div>
+    <div class="updated"><span class="dot"></span><span id="updated">updating…</span></div>
+    <select id="tz" title="Timezone">
+      <option value="6">🇧🇩 Bangladesh (UTC+6)</option>
+      <option value="3">🇸🇦 Saudi Arabia (UTC+3)</option>
+      <option value="0">🌍 UTC</option>
+      <option value="local">📍 My local time</option>
+    </select>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="bracket">Knockout Bracket</button>
+    <button class="tab" data-tab="groups">Group Stage</button>
+  </div>
+</header>
+
+<main>
+  <section id="view-groups" hidden></section>
+
+  <section id="view-bracket">
+    <div class="toolbar">
+      <button class="zbtn" id="zin" title="Zoom in">+</button>
+      <button class="zbtn" id="zout" title="Zoom out">−</button>
+      <button class="zbtn" id="zfit" title="Fit to screen" style="font-size:13px">⤢</button>
+      <span class="stage-pill">R32 → R16 → QF → SF → FINAL</span>
+      <span class="hint">Drag to pan · scroll / pinch to zoom · hover a team for details</span>
+    </div>
+    <div class="viewport" id="vp">
+      <svg class="links" id="links"></svg>
+      <div class="canvas" id="canvas"></div>
+    </div>
+  </section>
+
+  <div class="loading" id="loading">Loading tournament data…</div>
+</main>
+
+<footer class="site-footer">
+  Built by <a href="https://www.linkedin.com/in/mrmukto/" target="_blank" rel="noopener noreferrer">Mamunur Rashid Mukto</a>
+</footer>
+
+<div id="tip"></div>
+
+<script>
+const TZ_LABEL = {"6":"BST","3":"KSA","0":"UTC","local":"Local"};
+let DATA=null, tz="6";
+
+/* ---------- time helpers ---------- */
+function fmtTime(utcIso){
+  const d=new Date(utcIso);
+  if(tz==="local"){
+    return d.toLocaleString([], {weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  }
+  const off=parseInt(tz,10);
+  const shifted=new Date(d.getTime()+off*3600*1000);
+  const wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][shifted.getUTCDay()];
+  const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][shifted.getUTCMonth()];
+  let h=shifted.getUTCHours(), m=shifted.getUTCMinutes();
+  const ap=h>=12?'PM':'AM'; h=h%12||12;
+  return `${wd}, ${mo} ${shifted.getUTCDate()}, ${h}:${String(m).padStart(2,'0')} ${ap}`;
+}
+function shortTime(utcIso){
+  const d=new Date(utcIso), off= tz==="local"?-d.getTimezoneOffset()/60:parseInt(tz,10);
+  const s=new Date(d.getTime()+ (tz==="local"?0:off*3600*1000));
+  if(tz==="local") return d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+  let h=s.getUTCHours(),m=s.getUTCMinutes();const ap=h>=12?'PM':'AM';h=h%12||12;
+  return `${h}:${String(m).padStart(2,'0')} ${ap}`;
+}
+function shortDate(utcIso){
+  const d=new Date(utcIso), off= tz==="local"?0:parseInt(tz,10)*3600*1000;
+  const s=new Date(d.getTime()+off);
+  if(tz==="local") return d.toLocaleDateString([], {month:'short',day:'numeric'});
+  const wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][s.getUTCDay()];
+  const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][s.getUTCMonth()];
+  return `${wd} ${mo} ${s.getUTCDate()}`;
+}
+function dayKey(utcIso){
+  const d=new Date(utcIso), off= tz==="local"?0:parseInt(tz,10)*3600*1000;
+  const s=new Date(d.getTime()+off);
+  if(tz==="local") return d.toLocaleDateString([], {weekday:'long',month:'short',day:'numeric'});
+  const wd=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][s.getUTCDay()];
+  const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][s.getUTCMonth()];
+  return `${wd}, ${mo} ${s.getUTCDate()}`;
+}
+
+/* ---------- team lookup ---------- */
+function team(code){ return (DATA.teams[code]) || null; }
+function label(code){
+  const t=team(code);
+  if(t) return {flag:t.flag, name:t.name, tbd:false, code};
+  return {flag:"🛡️", name:code||"TBD", tbd:true, code:null}; // placeholder slots like "1A","W r32-1"
+}
+
+/* ---------- tooltip ---------- */
+const tip=document.getElementById('tip');
+function showTip(code,x,y){
+  const t=team(code); if(!t) return;
+  const grp=t.group;
+  // group position
+  let standing="—", played=0;
+  const row=(DATA.groups[grp]||[]).find(r=>r.team===code);
+  if(row){ played=row.p; standing=`${row.pts} pts · GD ${row.gd>=0?'+':''}${row.gd}`; }
+  tip.innerHTML=`<div class="th"><span class="fl">${t.flag}</span><span class="nm">${t.name}</span></div>
+    <div class="meta">
+      <span class="chip">Group ${grp}</span><span class="chip">FIFA #${t.fifaRank}</span><br>
+      <b>Record:</b> ${row?`${row.w}W ${row.d}D ${row.l}L`:'—'} (${played} pl)<br>
+      <b>Standing:</b> ${standing}
+    </div>`;
+  tip.style.left=Math.min(x+14, innerWidth-250)+'px';
+  tip.style.top=Math.min(y+14, innerHeight-120)+'px';
+  tip.classList.add('show');
+}
+function hideTip(){ tip.classList.remove('show'); }
+
+/* ---------- GROUP STAGE ---------- */
+function renderGroups(){
+  const el=document.getElementById('view-groups');
+  const letters=Object.keys(DATA.groups).sort();
+  el.innerHTML=`<div class="groups-grid">${letters.map(L=>{
+    const rows=[...DATA.groups[L]].sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+    const played=rows.reduce((s,r)=>s+r.p,0);
+    const complete=rows.length>0&&rows.every(r=>r.p>=3);
+    return `<div class="gcard"><h3>Group ${L}<span class="badge">${complete?'COMPLETE':played?'IN PROGRESS':'NOT STARTED'}</span></h3>
+      <table class="standings"><thead><tr>
+        <th class="tname">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th>
+      </tr></thead><tbody>
+      ${rows.map((r,i)=>{
+        const t=team(r.team); const cls=i===0?'q1':i===1?'q2':i===2?'q3':'';
+        return `<tr class="qual ${cls}" data-team="${r.team}">
+          <td class="tname"><span class="rank">${i+1}</span><span class="flag">${t.flag}</span>${t.name}</td>
+          <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
+          <td>${r.gd>0?'+':''}${r.gd}</td><td class="pts">${r.pts}</td></tr>`;
+      }).join('')}
+      </tbody></table></div>`;
+  }).join('')}</div>`;
+  // hover tooltips on rows
+  el.querySelectorAll('tr[data-team]').forEach(tr=>{
+    tr.addEventListener('mousemove',e=>showTip(tr.dataset.team,e.clientX,e.clientY));
+    tr.addEventListener('mouseleave',hideTip);
+  });
+}
+
+/* ---------- SCHEDULE ---------- */
+function renderSchedule(){
+  const el=document.getElementById('view-schedule');
+  const all=[...DATA.groupFixtures];
+  const byDay={};
+  all.forEach(m=>{ const k=dayKey(m.utc); (byDay[k]=byDay[k]||[]).push(m); });
+  const days=Object.keys(byDay).sort((a,b)=>new Date(byDay[a][0].utc)-new Date(byDay[b][0].utc));
+  el.innerHTML=days.map(day=>{
+    const ms=byDay[day].sort((a,b)=>new Date(a.utc)-new Date(b.utc));
+    return `<div class="gcard" style="margin-bottom:14px">
+      <h3>${day}<span class="badge">${TZ_LABEL[tz]||'Local'}</span></h3>
+      <table class="standings"><tbody>
+      ${ms.map(m=>{
+        const h=label(m.home),a=label(m.away);
+        const done=m.status==='FT'||m.status==='FINISHED';
+        const sc=done?`<span class="pts">${m.homeScore} – ${m.awayScore}</span>`:`<span style="color:var(--faint)">vs</span>`;
+        return `<tr>
+          <td style="width:90px;color:var(--muted);font-size:12px">${shortTime(m.utc)}</td>
+          <td class="tname" data-team="${m.home}" style="justify-content:flex-end;text-align:right">${h.name}<span class="flag">${h.flag}</span></td>
+          <td style="width:64px">${sc}</td>
+          <td class="tname" data-team="${m.away}"><span class="flag">${a.flag}</span>${a.name}</td>
+          <td style="width:46px;color:var(--faint);font-size:11px">Grp ${m.group}</td>
+        </tr>`;
+      }).join('')}
+      </tbody></table></div>`;
+  }).join('');
+  el.querySelectorAll('td[data-team]').forEach(td=>{
+    if(!team(td.dataset.team))return;
+    td.style.cursor='default';
+    td.addEventListener('mousemove',e=>showTip(td.dataset.team,e.clientX,e.clientY));
+    td.addEventListener('mouseleave',hideTip);
+  });
+}
+
+/* ---------- BRACKET ---------- */
+const COLW=300, MW=230, ROUND_GAP=70;
+const canvas=document.getElementById('canvas'), links=document.getElementById('links');
+let view={x:40,y:20,s:1};
+
+function matchCard(m, x, y){
+  const h=label(m.home), a=label(m.away);
+  const done=m.status==='FT'||m.status==='FINISHED';
+  const live=m.status==='LIVE'||m.status==='IN_PLAY';
+  let hWin=false,aWin=false;
+  if(done && m.homeScore!=null){ hWin=m.homeScore>m.awayScore; aWin=m.awayScore>m.homeScore; }
+  const sc=v=> (done||live)&&v!=null?v:'';
+  const node=document.createElement('div');
+  node.className='match'+(live?' live':'');
+  node.style.left=x+'px'; node.style.top=y+'px';
+  node.dataset.id=m.id;
+  node.innerHTML=`
+    <div class="mtime">${live?'<span class="live-tag">LIVE</span>':''}${shortDate(m.utc)} · ${shortTime(m.utc)}<span class="vn">${m.venue||''}</span></div>
+    <div class="row ${hWin?'win':done?'lose':''}" data-team="${h.code||''}">
+      <span class="flag">${h.flag}</span><span class="nm ${h.tbd?'tbd':''}">${h.name}</span><span class="sc">${sc(m.homeScore)}</span>
+    </div>
+    <div class="row ${aWin?'win':done?'lose':''}" data-team="${a.code||''}">
+      <span class="flag">${a.flag}</span><span class="nm ${a.tbd?'tbd':''}">${a.name}</span><span class="sc">${sc(m.awayScore)}</span>
+    </div>`;
+  node.querySelectorAll('.row[data-team]').forEach(r=>{
+    const c=r.dataset.team; if(!c)return;
+    r.addEventListener('mousemove',e=>showTip(c,e.clientX,e.clientY));
+    r.addEventListener('mouseleave',hideTip);
+  });
+  return node;
+}
+
+function renderBracket(){
+  canvas.innerHTML=''; links.innerHTML='';
+  const K=DATA.knockout;
+  const rounds=[
+    {key:'R32',label:'Round of 32',list:K.R32},
+    {key:'R16',label:'Round of 16',list:K.R16},
+    {key:'QF', label:'Quarter-finals',list:K.QF},
+    {key:'SF', label:'Semi-finals',list:K.SF},
+    {key:'F',  label:'Final',list:K.F},
+  ];
+  // Measure the real rendered card height so the dense R32 column doesn't overlap
+  // and connectors attach at the true vertical center (height changes if CSS does).
+  let CARDH=106; const baseGap=20;
+  const probeM=K.R32&&K.R32[0];
+  if(probeM){
+    const probe=matchCard(probeM,-9999,-9999);
+    canvas.appendChild(probe);
+    CARDH=probe.offsetHeight||CARDH;
+    canvas.removeChild(probe);
+  }
+  const pos={}; // id -> {x,y,cx,cy} center coords
+  let maxBottom=0;
+  rounds.forEach((rd,ri)=>{
+    const x=ri*(MW+ROUND_GAP)+10;
+    const n=rd.list.length;
+    const unit=(CARDH+baseGap)*Math.pow(2,ri);
+    // round label
+    const lab=document.createElement('div');
+    lab.className='round-label'; lab.style.left=x+'px'; lab.style.top='0px'; lab.textContent=rd.label;
+    canvas.appendChild(lab);
+    rd.list.forEach((m,i)=>{
+      const y=40 + i*unit + (unit-CARDH)/2;
+      const node=matchCard(m,x,y);
+      canvas.appendChild(node);
+      pos[m.id]={x, y, right:x+MW, cy:y+CARDH/2, left:x};
+      maxBottom=Math.max(maxBottom,y+CARDH);
+    });
+  });
+  // draw connectors: each match feeds -> next
+  const allMatches=[].concat(K.R32,K.R16,K.QF,K.SF);
+  allMatches.forEach(m=>{
+    if(!m.feeds||!pos[m.id]||!pos[m.feeds])return;
+    const a=pos[m.id], b=pos[m.feeds];
+    const x1=a.right, y1=a.cy, x2=b.left, y2=b.cy, midx=(x1+x2)/2;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1},${y1} H${midx} V${y2} H${x2}`);
+    p.setAttribute('fill','none'); p.setAttribute('stroke','#2c3c6b'); p.setAttribute('stroke-width','2');
+    links.appendChild(p);
+  });
+  // third place note under final
+  const fpos=pos['final'];
+  if(fpos){
+    const tp=DATA.knockout.TP&&DATA.knockout.TP[0];
+    if(tp){
+      const node=matchCard(tp, fpos.x, fpos.y+160);
+      const lab=document.createElement('div');
+      lab.className='round-label';lab.style.left=fpos.x+'px';lab.style.top=(fpos.y+128)+'px';lab.textContent='Third place';
+      canvas.appendChild(lab);canvas.appendChild(node);
+      maxBottom=Math.max(maxBottom,fpos.y+160+CARDH);
+    }
+  }
+  canvas.style.width=(rounds.length*(MW+ROUND_GAP))+'px';
+  canvas.style.height=(maxBottom+40)+'px';
+  links.style.width=canvas.style.width; links.style.height=canvas.style.height;
+  applyView();
+}
+function applyView(){
+  canvas.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.s})`;
+  links.style.transform=canvas.style.transform;
+}
+// Grow the viewport to fill from its top edge all the way to the bottom of the window
+// (the name footer floats on top), so the bracket gets the whole screen to pan/zoom.
+function sizeViewport(){
+  const vp=document.getElementById('vp');
+  const top=vp.getBoundingClientRect().top;
+  vp.style.height=Math.max(420, window.innerHeight - top)+'px';
+}
+function fitBracket(){
+  sizeViewport();
+  const vp=document.getElementById('vp');
+  const cw=parseFloat(canvas.style.width), ch=parseFloat(canvas.style.height);
+  const s=Math.min(vp.clientWidth/cw, vp.clientHeight/ch)*0.96;
+  view.s=Math.max(0.25,Math.min(1,s));
+  view.x=(vp.clientWidth-cw*view.s)/2; view.y=12;
+  applyView();
+}
+
+/* pan + zoom */
+(function(){
+  const vp=document.getElementById('vp');
+  let drag=false,sx,sy,ox,oy;
+  vp.addEventListener('mousedown',e=>{drag=true;vp.classList.add('grabbing');sx=e.clientX;sy=e.clientY;ox=view.x;oy=view.y;});
+  window.addEventListener('mousemove',e=>{if(!drag)return;view.x=ox+(e.clientX-sx);view.y=oy+(e.clientY-sy);applyView();});
+  window.addEventListener('mouseup',()=>{drag=false;vp.classList.remove('grabbing');});
+  vp.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const rect=vp.getBoundingClientRect(), mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    const ns=Math.max(0.25,Math.min(2,view.s*(e.deltaY<0?1.12:0.89)));
+    view.x=mx-(mx-view.x)*(ns/view.s); view.y=my-(my-view.y)*(ns/view.s); view.s=ns; applyView();
+  },{passive:false});
+  // touch pinch + pan
+  let pts=new Map(),pd=0,pcx=0,pcy=0;
+  vp.addEventListener('touchstart',e=>{for(const t of e.changedTouches)pts.set(t.identifier,{x:t.clientX,y:t.clientY});init();},{passive:false});
+  vp.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    for(const t of e.changedTouches){if(pts.has(t.identifier))pts.set(t.identifier,{x:t.clientX,y:t.clientY});}
+    const a=[...pts.values()];
+    if(a.length===1){view.x+=a[0].x-lx;view.y+=a[0].y-ly;lx=a[0].x;ly=a[0].y;applyView();}
+    else if(a.length>=2){
+      const d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);
+      const cx=(a[0].x+a[1].x)/2,cy=(a[0].y+a[1].y)/2;
+      if(pd){const ns=Math.max(0.25,Math.min(2,view.s*(d/pd)));const rect=vp.getBoundingClientRect();
+        const mx=cx-rect.left,my=cy-rect.top;view.x=mx-(mx-view.x)*(ns/view.s);view.y=my-(my-view.y)*(ns/view.s);view.s=ns;applyView();}
+      pd=d;
+    }
+  },{passive:false});
+  let lx,ly;
+  function init(){const a=[...pts.values()];if(a.length===1){lx=a[0].x;ly=a[0].y;}pd=0;}
+  vp.addEventListener('touchend',e=>{for(const t of e.changedTouches)pts.delete(t.identifier);init();});
+  document.getElementById('zin').onclick=()=>{view.s=Math.min(2,view.s*1.2);applyView();};
+  document.getElementById('zout').onclick=()=>{view.s=Math.max(0.25,view.s*0.83);applyView();};
+  document.getElementById('zfit').onclick=fitBracket;
+})();
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const v=t.dataset.tab;
+    document.getElementById('view-groups').hidden=v!=='groups';
+    document.getElementById('view-bracket').hidden=v!=='bracket';
+    if(v==='bracket') setTimeout(()=>{renderBracket();fitBracket();},30);
+  };
+});
+document.getElementById('tz').onchange=e=>{tz=e.target.value;renderAll();};
+
+function renderAll(){
+  renderGroups(); renderBracket();
+}
+
+/* ---------- load + auto-refresh ---------- */
+async function load(){
+  try{
+    const res=await fetch('data/tournament.json?ts='+Date.now());
+    DATA=await res.json();
+    document.getElementById('loading').hidden=true;
+    const u=new Date(DATA.meta.lastUpdated);
+    document.getElementById('updated').textContent='Updated '+u.toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    renderAll();
+    if(!document.getElementById('view-bracket').hidden) setTimeout(fitBracket,30);
+  }catch(err){
+    document.getElementById('loading').textContent='Could not load data/tournament.json — check the file path.';
+    console.error(err);
+  }
+}
+load();
+// re-pull JSON every 2 minutes so the page reflects the latest committed data without a manual refresh
+setInterval(load, 120000);
+window.addEventListener('resize',()=>{ if(!document.getElementById('view-bracket').hidden) fitBracket(); });
+</script>
+</body>
+</html>

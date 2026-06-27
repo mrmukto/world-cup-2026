@@ -1,0 +1,39 @@
+name: Update World Cup data
+
+on:
+  schedule:
+    # Every 30 minutes. GitHub cron is UTC. During live matches you can lower this,
+    # but mind the API free-tier limits. (Cron can run a few minutes late under load.)
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}   # lets you trigger a refresh manually from the Actions tab
+
+permissions:
+  contents: write          # needed so the job can commit the refreshed JSON
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch latest data
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+          WC_COMPETITION: WC
+        run: python scripts/update_data.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "wc-bot"
+          git config user.email "actions@github.com"
+          git add data/tournament.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "data: refresh $(date -u +'%Y-%m-%dT%H:%MZ')"
+            git push
+          fi

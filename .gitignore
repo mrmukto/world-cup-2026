@@ -1,0 +1,15 @@
+# Editor / tooling
+.claude/
+.DS_Store
+
+# Build artifact / archive (not needed in the repo)
+*.zip
+
+# Redundant root duplicates — the real files live in data/, scripts/, .github/workflows/
+/tournament.json
+/update_data.py
+/update-data.yml
+
+# Python cache
+__pycache__/
+*.pyc
