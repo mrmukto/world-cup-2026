@@ -8,15 +8,16 @@ Hosted free on **GitHub Pages**; data refreshed automatically by **GitHub Action
 
 GitHub Pages only serves static files — it can't poll an API on its own. So:
 
-1. A scheduled GitHub Action (`.github/workflows/update-data.yml`) runs every 30 min.
-2. It calls `scripts/update_data.py`, which fetches live standings + results.
+1. A scheduled GitHub Action (`.github/workflows/update-data.yml`) runs every 15 min.
+2. It calls `scripts/update_data.py`, which fetches live standings + results from the
+   free, **key-less** worldcup26.ir API.
 3. The script rewrites `data/tournament.json` and commits it back to the repo.
 4. Pages serves the new JSON; the page re-fetches it every 2 minutes in the browser.
 
-No server, no database, no hosting cost.
+No server, no database, no API key, no hosting cost.
 
 ```
-GitHub Actions (cron) → Football API → writes data/tournament.json → commit
+GitHub Actions (cron) → worldcup26.ir → writes data/tournament.json → commit
                                                    │
 GitHub Pages serves it ── browser fetches every 2 min ── bracket + tables update
 ```
@@ -26,12 +27,10 @@ GitHub Pages serves it ── browser fetches every 2 min ── bracket + table
 1. Create a repo and drop these files in at the root.
 2. Push. Then **Settings → Pages → Build from branch → `main` / root**.
    Your site is live at `https://<user>.github.io/<repo>/`.
-3. Get a free API key at <https://www.football-data.org/client/register>.
-4. **Settings → Secrets and variables → Actions → New repository secret**:
-   name `FOOTBALL_DATA_TOKEN`, value = your key.
-5. **Actions** tab → enable workflows → run **Update World Cup data** once to test.
+3. **Actions** tab → enable workflows → run **Update World Cup data** once to test.
 
-That's it. The bracket and tables will start reflecting real results automatically.
+That's it — no API key or secret to configure. The bracket and tables start
+reflecting real results automatically.
 
 ## Files
 
@@ -42,15 +41,18 @@ That's it. The bracket and tables will start reflecting real results automatical
 | `scripts/update_data.py` | Pulls standings + results, rewrites the JSON. |
 | `.github/workflows/update-data.yml` | Cron job that runs the script and commits. |
 
-## Data source options
+## Data source
 
-The script targets **football-data.org** (free, World Cup included, 10 req/min).
-To switch providers, only edit the fetch/mapping functions in `update_data.py`:
+The script targets **worldcup26.ir** — a free, open, **no-key** REST API for WC 2026
+(`/get/teams`, `/get/games`). Group standings are computed from finished group matches,
+and knockout scores/teams are patched in as rounds complete (winners propagate through
+the bracket automatically).
 
-- **API-Football** — `/standings?league=1&season=2026` returns all 12 group tables; 100 req/day free.
-- **worldcup26.ir** — open-source, no auth for the demo endpoints; simplest to wire up.
+To switch providers, only edit the fetch/mapping functions in `update_data.py`; the JSON
+schema stays the same, so `index.html` never changes. Alternatives if needed:
 
-The JSON schema stays the same regardless of source, so `index.html` never changes.
+- **football-data.org** — free tier, requires an API key (`FOOTBALL_DATA_TOKEN`).
+- **API-Football** — `/standings?league=1&season=2026`; 100 req/day free, key required.
 
 ## Notes
 

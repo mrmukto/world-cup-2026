@@ -2,9 +2,8 @@ name: Update World Cup data
 
 on:
   schedule:
-    # Every 30 minutes. GitHub cron is UTC. During live matches you can lower this,
-    # but mind the API free-tier limits. (Cron can run a few minutes late under load.)
-    - cron: "*/30 * * * *"
+    # Every 15 minutes. GitHub cron is UTC and can run a few minutes late under load.
+    - cron: "*/15 * * * *"
   workflow_dispatch: {}   # lets you trigger a refresh manually from the Actions tab
 
 permissions:
@@ -21,10 +20,7 @@ jobs:
           python-version: "3.12"
 
       - name: Fetch latest data
-        env:
-          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
-          WC_COMPETITION: WC
-        run: python scripts/update_data.py
+        run: python scripts/update_data.py   # worldcup26.ir — free, no API key needed
 
       - name: Commit if changed
         run: |
