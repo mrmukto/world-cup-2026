@@ -2,8 +2,9 @@ name: Update World Cup data
 
 on:
   schedule:
-    # Every 15 minutes. GitHub cron is UTC and can run a few minutes late under load.
-    - cron: "*/15 * * * *"
+    # Roughly every 15 min, but offset off :00/:15/:30/:45 — GitHub delays/skips cron
+    # most around the top of the hour (its busiest window). Odd minutes are more reliable.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch: {}   # lets you trigger a refresh manually from the Actions tab
 
 permissions:
