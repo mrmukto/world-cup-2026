@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-06-27T23:46:44+00:00",
+    "lastUpdated": "2026-06-28T01:58:10+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -759,46 +759,46 @@
     "K": [
       {
         "team": "COL",
-        "p": 2,
+        "p": 3,
         "w": 2,
-        "d": 0,
+        "d": 1,
         "l": 0,
         "gf": 4,
         "ga": 1,
         "gd": 3,
-        "pts": 6
+        "pts": 7
       },
       {
         "team": "POR",
-        "p": 2,
+        "p": 3,
         "w": 1,
-        "d": 1,
+        "d": 2,
         "l": 0,
         "gf": 6,
         "ga": 1,
         "gd": 5,
-        "pts": 4
+        "pts": 5
       },
       {
         "team": "COD",
-        "p": 2,
-        "w": 0,
+        "p": 3,
+        "w": 1,
         "d": 1,
         "l": 1,
-        "gf": 1,
-        "ga": 2,
-        "gd": -1,
-        "pts": 1
+        "gf": 4,
+        "ga": 3,
+        "gd": 1,
+        "pts": 4
       },
       {
         "team": "UZB",
-        "p": 2,
+        "p": 3,
         "w": 0,
         "d": 0,
-        "l": 2,
-        "gf": 1,
-        "ga": 8,
-        "gd": -7,
+        "l": 3,
+        "gf": 2,
+        "ga": 11,
+        "gd": -9,
         "pts": 0
       }
     ],
