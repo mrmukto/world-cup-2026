@@ -120,8 +120,13 @@
   .match.final{border-color:var(--gold-dim)}
   .match.bronze{border-color:#3a6b86}
   /* date / tag caption under each card */
-  .mdate{position:absolute;width:118px;text-align:center;font-size:10px;color:var(--faint);letter-spacing:.3px;pointer-events:none}
+  .mdate{position:absolute;width:118px;text-align:center;font-size:10px;color:var(--faint);letter-spacing:.2px;pointer-events:none;white-space:nowrap}
   .mdate.islive{color:var(--live);font-weight:700}
+  .mdate.isdone{color:var(--green)}
+  .mdate .ftbadge{display:inline-block;background:var(--green);color:#06231a;font-weight:800;font-size:8.5px;
+                  letter-spacing:.5px;border-radius:4px;padding:0 4px;margin-right:3px;vertical-align:1px}
+  .match.done{border-color:#2c3c6b;opacity:.96}
+  .match.done .row:not(.win){opacity:.5}
   .mtag{display:block;font-size:8.5px;font-weight:800;letter-spacing:.8px;margin-bottom:1px}
   .mtag.f{color:var(--gold)} .mtag.b{color:#7fd4ff}
   /* centre trophy */
@@ -373,7 +378,7 @@ function matchCard(m, x, y, opts){
   const sc=v=> (done||live)&&v!=null?v:'';
   const nm=s=> s.tbd?'TBD':(s.code||s.name);
   const node=document.createElement('div');
-  node.className='match'+(live?' live':'')+(opts.cls?' '+opts.cls:'');
+  node.className='match'+(live?' live':'')+(done?' done':'')+(opts.cls?' '+opts.cls:'');
   node.style.left=x+'px'; node.style.top=y+'px'; node.dataset.id=m.id;
   node.innerHTML=`
     <div class="row ${hWin?'win':done?'lose':''}" data-team="${h.code||''}">
@@ -389,9 +394,13 @@ function matchCard(m, x, y, opts){
   });
   canvas.appendChild(node);
   const cap=document.createElement('div');
-  cap.className='mdate'+(live?' islive':'');
+  cap.className='mdate'+(live?' islive':'')+(done?' isdone':'');
   cap.style.left=x+'px'; cap.style.top=(y+CARDH+3)+'px';
-  cap.innerHTML=(opts.tag?`<span class="mtag ${opts.tag.cls}">${opts.tag.text}</span>`:'')+(live?'LIVE':relDate(m.utc));
+  let when;
+  if(live) when='LIVE';
+  else if(done) when=`<span class="ftbadge">FT</span>${relDate(m.utc)}`;
+  else { const d=relDate(m.utc), t=m.utc?shortTime(m.utc):''; when = d&&t?`${d} · ${t}`:(d||t||''); }
+  cap.innerHTML=(opts.tag?`<span class="mtag ${opts.tag.cls}">${opts.tag.text}</span>`:'')+when;
   canvas.appendChild(cap);
   return node;
 }
