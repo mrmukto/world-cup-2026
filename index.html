@@ -335,6 +335,7 @@ function renderSchedule(){
 const COLW=300, MW=230, ROUND_GAP=70;
 const canvas=document.getElementById('canvas'), links=document.getElementById('links');
 let view={x:40,y:20,s:1};
+let bracketFitted=false; // fit-to-screen only once; later refreshes must keep the user's pan/zoom
 
 function matchCard(m, x, y){
   const h=label(m.home), a=label(m.away);
@@ -447,6 +448,7 @@ function fitBracket(){
   const s=Math.min(vp.clientWidth/cw, vp.clientHeight/ch)*0.96;
   view.s=Math.max(0.25,Math.min(1,s));
   view.x=(vp.clientWidth-cw*view.s)/2; view.y=12;
+  bracketFitted=true;
   applyView();
 }
 
@@ -513,7 +515,8 @@ async function load(){
     const u=new Date(DATA.meta.lastUpdated);
     document.getElementById('updated').textContent='Updated '+u.toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
     renderAll();
-    if(!document.getElementById('view-bracket').hidden) setTimeout(fitBracket,30);
+    // fit only on the first load; later 2-min refreshes keep the user's pan/zoom
+    if(!bracketFitted && !document.getElementById('view-bracket').hidden) setTimeout(fitBracket,30);
   }catch(err){
     document.getElementById('loading').textContent='Could not load data/tournament.json — check the file path.';
     console.error(err);
@@ -522,7 +525,8 @@ async function load(){
 load();
 // re-pull JSON every 2 minutes so the page reflects the latest committed data without a manual refresh
 setInterval(load, 120000);
-window.addEventListener('resize',()=>{ if(!document.getElementById('view-bracket').hidden) fitBracket(); });
+// keep the viewport filling the screen on resize, but preserve the user's current pan/zoom
+window.addEventListener('resize',()=>{ if(!document.getElementById('view-bracket').hidden) sizeViewport(); });
 </script>
 </body>
 </html>
