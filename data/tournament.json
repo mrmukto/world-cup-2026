@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-06-29T19:17:49+00:00",
+    "lastUpdated": "2026-06-29T21:00:26+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1578,10 +1578,10 @@
         "utc": "2026-06-29T20:30:00Z",
         "home": "GER",
         "away": "BIH",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 0,
         "venue": "Foxborough",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "r16-1",
         "slot": "home"
       },
