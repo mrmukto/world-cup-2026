@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-06-29T23:30:13+00:00",
+    "lastUpdated": "2026-06-30T01:34:11+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1581,7 +1581,7 @@
         "homeScore": 1,
         "awayScore": 1,
         "venue": "Foxborough",
-        "status": "LIVE",
+        "status": "FT",
         "feeds": "r16-1",
         "slot": "home"
       },
@@ -1614,10 +1614,10 @@
         "utc": "2026-06-30T01:00:00Z",
         "home": "NED",
         "away": "MAR",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 0,
         "venue": "Guadalupe",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "r16-2",
         "slot": "away"
       },
@@ -1770,7 +1770,7 @@
       {
         "id": "r16-1",
         "utc": "2026-07-04T21:00:00Z",
-        "home": "W r32-1",
+        "home": "PAR",
         "away": "W r32-2",
         "homeScore": null,
         "awayScore": null,
