@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-06-30T15:08:09+00:00",
+    "lastUpdated": "2026-06-30T17:19:29+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1752,12 +1752,12 @@
         "utc": "2026-06-30T17:00:00Z",
         "home": "CIV",
         "away": "NOR",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Arlington",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "r16-5",
         "slot": "away"
       },
