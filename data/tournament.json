@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-06-30T01:59:44+00:00",
+    "lastUpdated": "2026-06-30T04:36:45+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -10,289 +10,337 @@
       "name": "Mexico",
       "group": "A",
       "flag": "🇲🇽",
-      "fifaRank": 14
+      "fifaRank": 14,
+      "flag2": "mx"
     },
     "RSA": {
       "name": "South Africa",
       "group": "A",
       "flag": "🇿🇦",
-      "fifaRank": 58
+      "fifaRank": 58,
+      "flag2": "za"
     },
     "KOR": {
       "name": "South Korea",
       "group": "A",
       "flag": "🇰🇷",
-      "fifaRank": 23
+      "fifaRank": 23,
+      "flag2": "kr"
     },
     "CZE": {
       "name": "Czechia",
       "group": "A",
       "flag": "🇨🇿",
-      "fifaRank": 43
+      "fifaRank": 43,
+      "flag2": "cz"
     },
     "CAN": {
       "name": "Canada",
       "group": "B",
       "flag": "🇨🇦",
-      "fifaRank": 30
+      "fifaRank": 30,
+      "flag2": "ca"
     },
     "BIH": {
       "name": "Bosnia & Herzegovina",
       "group": "B",
       "flag": "🇧🇦",
-      "fifaRank": 74
+      "fifaRank": 74,
+      "flag2": "ba"
     },
     "QAT": {
       "name": "Qatar",
       "group": "B",
       "flag": "🇶🇦",
-      "fifaRank": 37
+      "fifaRank": 37,
+      "flag2": "qa"
     },
     "SUI": {
       "name": "Switzerland",
       "group": "B",
       "flag": "🇨🇭",
-      "fifaRank": 19
+      "fifaRank": 19,
+      "flag2": "ch"
     },
     "BRA": {
       "name": "Brazil",
       "group": "C",
       "flag": "🇧🇷",
-      "fifaRank": 5
+      "fifaRank": 5,
+      "flag2": "br"
     },
     "MAR": {
       "name": "Morocco",
       "group": "C",
       "flag": "🇲🇦",
-      "fifaRank": 12
+      "fifaRank": 12,
+      "flag2": "ma"
     },
     "HAI": {
       "name": "Haiti",
       "group": "C",
       "flag": "🇭🇹",
-      "fifaRank": 83
+      "fifaRank": 83,
+      "flag2": "ht"
     },
     "SCO": {
       "name": "Scotland",
       "group": "C",
       "flag": "🇬🇧",
-      "fifaRank": 39
+      "fifaRank": 39,
+      "flag2": "gb-sct"
     },
     "USA": {
       "name": "USA",
       "group": "D",
       "flag": "🇺🇸",
-      "fifaRank": 16
+      "fifaRank": 16,
+      "flag2": "us"
     },
     "PAR": {
       "name": "Paraguay",
       "group": "D",
       "flag": "🇵🇾",
-      "fifaRank": 46
+      "fifaRank": 46,
+      "flag2": "py"
     },
     "AUS": {
       "name": "Australia",
       "group": "D",
       "flag": "🇦🇺",
-      "fifaRank": 24
+      "fifaRank": 24,
+      "flag2": "au"
     },
     "TUR": {
       "name": "Türkiye",
       "group": "D",
       "flag": "🇹🇷",
-      "fifaRank": 26
+      "fifaRank": 26,
+      "flag2": "tr"
     },
     "GER": {
       "name": "Germany",
       "group": "E",
       "flag": "🇩🇪",
-      "fifaRank": 10
+      "fifaRank": 10,
+      "flag2": "de"
     },
     "CUW": {
       "name": "Curaçao",
       "group": "E",
       "flag": "🇨🇼",
-      "fifaRank": 90
+      "fifaRank": 90,
+      "flag2": "cw"
     },
     "CIV": {
       "name": "Ivory Coast",
       "group": "E",
       "flag": "🇨🇮",
-      "fifaRank": 41
+      "fifaRank": 41,
+      "flag2": "ci"
     },
     "ECU": {
       "name": "Ecuador",
       "group": "E",
       "flag": "🇪🇨",
-      "fifaRank": 22
+      "fifaRank": 22,
+      "flag2": "ec"
     },
     "NED": {
       "name": "Netherlands",
       "group": "F",
       "flag": "🇳🇱",
-      "fifaRank": 6
+      "fifaRank": 6,
+      "flag2": "nl"
     },
     "JPN": {
       "name": "Japan",
       "group": "F",
       "flag": "🇯🇵",
-      "fifaRank": 17
+      "fifaRank": 17,
+      "flag2": "jp"
     },
     "SWE": {
       "name": "Sweden",
       "group": "F",
       "flag": "🇸🇪",
-      "fifaRank": 35
+      "fifaRank": 35,
+      "flag2": "se"
     },
     "TUN": {
       "name": "Tunisia",
       "group": "F",
       "flag": "🇹🇳",
-      "fifaRank": 49
+      "fifaRank": 49,
+      "flag2": "tn"
     },
     "BEL": {
       "name": "Belgium",
       "group": "G",
       "flag": "🇧🇪",
-      "fifaRank": 8
+      "fifaRank": 8,
+      "flag2": "be"
     },
     "EGY": {
       "name": "Egypt",
       "group": "G",
       "flag": "🇪🇬",
-      "fifaRank": 36
+      "fifaRank": 36,
+      "flag2": "eg"
     },
     "IRN": {
       "name": "Iran",
       "group": "G",
       "flag": "🇮🇷",
-      "fifaRank": 20
+      "fifaRank": 20,
+      "flag2": "ir"
     },
     "NZL": {
       "name": "New Zealand",
       "group": "G",
       "flag": "🇳🇿",
-      "fifaRank": 86
+      "fifaRank": 86,
+      "flag2": "nz"
     },
     "ESP": {
       "name": "Spain",
       "group": "H",
       "flag": "🇪🇸",
-      "fifaRank": 2
+      "fifaRank": 2,
+      "flag2": "es"
     },
     "CPV": {
       "name": "Cape Verde",
       "group": "H",
       "flag": "🇨🇻",
-      "fifaRank": 70
+      "fifaRank": 70,
+      "flag2": "cv"
     },
     "KSA": {
       "name": "Saudi Arabia",
       "group": "H",
       "flag": "🇸🇦",
-      "fifaRank": 59
+      "fifaRank": 59,
+      "flag2": "sa"
     },
     "URU": {
       "name": "Uruguay",
       "group": "H",
       "flag": "🇺🇾",
-      "fifaRank": 15
+      "fifaRank": 15,
+      "flag2": "uy"
     },
     "FRA": {
       "name": "France",
       "group": "I",
       "flag": "🇫🇷",
-      "fifaRank": 3
+      "fifaRank": 3,
+      "flag2": "fr"
     },
     "SEN": {
       "name": "Senegal",
       "group": "I",
       "flag": "🇸🇳",
-      "fifaRank": 18
+      "fifaRank": 18,
+      "flag2": "sn"
     },
     "IRQ": {
       "name": "Iraq",
       "group": "I",
       "flag": "🇮🇶",
-      "fifaRank": 58
+      "fifaRank": 58,
+      "flag2": "iq"
     },
     "NOR": {
       "name": "Norway",
       "group": "I",
       "flag": "🇳🇴",
-      "fifaRank": 42
+      "fifaRank": 42,
+      "flag2": "no"
     },
     "ARG": {
       "name": "Argentina",
       "group": "J",
       "flag": "🇦🇷",
-      "fifaRank": 1
+      "fifaRank": 1,
+      "flag2": "ar"
     },
     "ALG": {
       "name": "Algeria",
       "group": "J",
       "flag": "🇩🇿",
-      "fifaRank": 38
+      "fifaRank": 38,
+      "flag2": "dz"
     },
     "AUT": {
       "name": "Austria",
       "group": "J",
       "flag": "🇦🇹",
-      "fifaRank": 25
+      "fifaRank": 25,
+      "flag2": "at"
     },
     "JOR": {
       "name": "Jordan",
       "group": "J",
       "flag": "🇯🇴",
-      "fifaRank": 64
+      "fifaRank": 64,
+      "flag2": "jo"
     },
     "POR": {
       "name": "Portugal",
       "group": "K",
       "flag": "🇵🇹",
-      "fifaRank": 7
+      "fifaRank": 7,
+      "flag2": "pt"
     },
     "COD": {
       "name": "DR Congo",
       "group": "K",
       "flag": "🇨🇩",
-      "fifaRank": 57
+      "fifaRank": 57,
+      "flag2": "cd"
     },
     "UZB": {
       "name": "Uzbekistan",
       "group": "K",
       "flag": "🇺🇿",
-      "fifaRank": 55
+      "fifaRank": 55,
+      "flag2": "uz"
     },
     "COL": {
       "name": "Colombia",
       "group": "K",
       "flag": "🇨🇴",
-      "fifaRank": 13
+      "fifaRank": 13,
+      "flag2": "co"
     },
     "ENG": {
       "name": "England",
       "group": "L",
       "flag": "🇬🇧",
-      "fifaRank": 4
+      "fifaRank": 4,
+      "flag2": "gb-eng"
     },
     "CRO": {
       "name": "Croatia",
       "group": "L",
       "flag": "🇭🇷",
-      "fifaRank": 11
+      "fifaRank": 11,
+      "flag2": "hr"
     },
     "GHA": {
       "name": "Ghana",
       "group": "L",
       "flag": "🇬🇭",
-      "fifaRank": 73
+      "fifaRank": 73,
+      "flag2": "gh"
     },
     "PAN": {
       "name": "Panama",
       "group": "L",
       "flag": "🇵🇦",
-      "fifaRank": 44
+      "fifaRank": 44,
+      "flag2": "pa"
     }
   },
   "groups": {
@@ -1580,6 +1628,8 @@
         "away": "PAR",
         "homeScore": 1,
         "awayScore": 1,
+        "homePens": 3,
+        "awayPens": 4,
         "venue": "Foxborough",
         "status": "FT",
         "feeds": "r16-1",
@@ -1592,6 +1642,8 @@
         "away": "SWE",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "East Rutherford",
         "status": "SCHEDULED",
         "feeds": "r16-1",
@@ -1604,6 +1656,8 @@
         "away": "CAN",
         "homeScore": 0,
         "awayScore": 1,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Inglewood",
         "status": "FT",
         "feeds": "r16-2",
@@ -1614,10 +1668,12 @@
         "utc": "2026-06-30T01:00:00Z",
         "home": "NED",
         "away": "MAR",
-        "homeScore": 0,
-        "awayScore": 0,
+        "homeScore": 1,
+        "awayScore": 1,
+        "homePens": 2,
+        "awayPens": 3,
         "venue": "Guadalupe",
-        "status": "LIVE",
+        "status": "FT",
         "feeds": "r16-2",
         "slot": "away"
       },
@@ -1628,6 +1684,8 @@
         "away": "CRO",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Toronto",
         "status": "SCHEDULED",
         "feeds": "r16-3",
@@ -1640,6 +1698,8 @@
         "away": "AUT",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Inglewood",
         "status": "SCHEDULED",
         "feeds": "r16-3",
@@ -1652,6 +1712,8 @@
         "away": "BIH",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Santa Clara",
         "status": "SCHEDULED",
         "feeds": "r16-4",
@@ -1664,6 +1726,8 @@
         "away": "SEN",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Seattle",
         "status": "SCHEDULED",
         "feeds": "r16-4",
@@ -1676,6 +1740,8 @@
         "away": "JPN",
         "homeScore": 2,
         "awayScore": 1,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Houston",
         "status": "FT",
         "feeds": "r16-5",
@@ -1688,6 +1754,8 @@
         "away": "NOR",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Arlington",
         "status": "SCHEDULED",
         "feeds": "r16-5",
@@ -1700,6 +1768,8 @@
         "away": "ECU",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Mexico City",
         "status": "SCHEDULED",
         "feeds": "r16-6",
@@ -1712,6 +1782,8 @@
         "away": "COD",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Atlanta",
         "status": "SCHEDULED",
         "feeds": "r16-6",
@@ -1724,6 +1796,8 @@
         "away": "CPV",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Miami Gardens",
         "status": "SCHEDULED",
         "feeds": "r16-7",
@@ -1736,6 +1810,8 @@
         "away": "EGY",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Arlington",
         "status": "SCHEDULED",
         "feeds": "r16-7",
@@ -1748,6 +1824,8 @@
         "away": "ALG",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Vancouver",
         "status": "SCHEDULED",
         "feeds": "r16-8",
@@ -1760,6 +1838,8 @@
         "away": "GHA",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Kansas City",
         "status": "SCHEDULED",
         "feeds": "r16-8",
@@ -1774,6 +1854,8 @@
         "away": "W r32-2",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Philadelphia",
         "status": "SCHEDULED",
         "feeds": "qf-1",
@@ -1783,9 +1865,11 @@
         "id": "r16-2",
         "utc": "2026-07-04T17:00:00Z",
         "home": "CAN",
-        "away": "W r32-4",
+        "away": "MAR",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Houston",
         "status": "SCHEDULED",
         "feeds": "qf-1",
@@ -1798,6 +1882,8 @@
         "away": "W r32-6",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Arlington",
         "status": "SCHEDULED",
         "feeds": "qf-2",
@@ -1810,6 +1896,8 @@
         "away": "W r32-8",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Seattle",
         "status": "SCHEDULED",
         "feeds": "qf-2",
@@ -1822,6 +1910,8 @@
         "away": "W r32-10",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "East Rutherford",
         "status": "SCHEDULED",
         "feeds": "qf-3",
@@ -1834,6 +1924,8 @@
         "away": "W r32-12",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Mexico City",
         "status": "SCHEDULED",
         "feeds": "qf-3",
@@ -1846,6 +1938,8 @@
         "away": "W r32-14",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Atlanta",
         "status": "SCHEDULED",
         "feeds": "qf-4",
@@ -1858,6 +1952,8 @@
         "away": "W r32-16",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Vancouver",
         "status": "SCHEDULED",
         "feeds": "qf-4",
@@ -1872,6 +1968,8 @@
         "away": "W r16-2",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Foxborough",
         "status": "SCHEDULED",
         "feeds": "sf-1",
@@ -1884,6 +1982,8 @@
         "away": "W r16-4",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Inglewood",
         "status": "SCHEDULED",
         "feeds": "sf-1",
@@ -1896,6 +1996,8 @@
         "away": "W r16-6",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Miami Gardens",
         "status": "SCHEDULED",
         "feeds": "sf-2",
@@ -1908,6 +2010,8 @@
         "away": "W r16-8",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Kansas City",
         "status": "SCHEDULED",
         "feeds": "sf-2",
@@ -1922,6 +2026,8 @@
         "away": "W qf-2",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Arlington",
         "status": "SCHEDULED",
         "feeds": "final",
@@ -1934,6 +2040,8 @@
         "away": "W qf-4",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Atlanta",
         "status": "SCHEDULED",
         "feeds": "final",
@@ -1948,6 +2056,8 @@
         "away": "W sf-2",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "East Rutherford",
         "status": "SCHEDULED",
         "feeds": null,
@@ -1962,6 +2072,8 @@
         "away": "L sf-2",
         "homeScore": null,
         "awayScore": null,
+        "homePens": null,
+        "awayPens": null,
         "venue": "Miami Gardens",
         "status": "SCHEDULED",
         "feeds": null,

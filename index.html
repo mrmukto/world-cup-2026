@@ -77,7 +77,7 @@
   table.standings th.tname{text-align:left;padding-left:14px}
   table.standings td{padding:9px 6px;text-align:center;border-top:1px solid rgba(38,52,94,.5)}
   table.standings td.tname{text-align:left;padding-left:14px;display:flex;align-items:center;gap:9px}
-  table.standings td .flag{font-size:17px;width:22px}
+  table.standings td .flag{font-size:17px;width:24px;display:inline-flex;justify-content:center}
   table.standings td .rank{width:16px;color:var(--faint);font-size:11px}
   .qual td{position:relative}
   tr.q1 td:first-child::before,tr.q2 td:first-child::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green)}
@@ -110,10 +110,13 @@
   .row{display:flex;align-items:center;gap:7px;padding:0 8px;height:26px;cursor:default;transition:background .12s}
   .row+.row{border-top:1px solid rgba(38,52,94,.55)}
   .row:hover{background:rgba(245,196,81,.08)}
-  .row .flag{font-size:14px;width:18px;text-align:center;flex:0 0 auto}
+  .row .flag{font-size:14px;width:20px;text-align:center;flex:0 0 auto}
+  /* flag images (cross-platform, since emoji flags fail on many Windows browsers) */
+  .flagimg{height:.95em;width:1.4em;object-fit:cover;border-radius:2px;display:inline-block;vertical-align:-2px;background:#0e1730}
   .row .nm{font-size:12px;font-weight:600;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .row .nm.tbd{color:var(--faint);font-weight:500;letter-spacing:.2px}
   .row .sc{margin-left:auto;font-weight:700;font-size:12.5px;min-width:14px;text-align:right;color:var(--muted)}
+  .row .sc .pen{font-size:9px;font-weight:600;color:var(--faint);margin-right:3px}
   .row.win .nm{color:#fff}.row.win .sc{color:var(--green)}
   .row.lose{opacity:.5}
   .match.live{border-color:var(--live);box-shadow:0 0 0 1px rgba(255,71,87,.4),0 4px 14px rgba(0,0,0,.32)}
@@ -136,14 +139,21 @@
 
   /* tooltip */
   #tip{position:fixed;z-index:50;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;
-       background:var(--panel2);border:1px solid var(--gold);border-radius:11px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.5);max-width:240px}
+       background:var(--panel2);border:1px solid var(--gold);border-radius:11px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.5);max-width:268px}
   #tip.show{opacity:1;transform:translateY(0)}
   #tip .th{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-  #tip .th .fl{font-size:26px}
+  #tip .th .fl{font-size:26px;display:inline-flex}
   #tip .th .nm{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.5px}
   #tip .meta{font-size:12px;color:var(--muted);line-height:1.7}
   #tip .meta b{color:var(--ink);font-weight:600}
   #tip .chip{display:inline-block;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:11px;color:var(--gold);margin-right:4px}
+  /* knockout-path tooltip rows */
+  #tip .kopath{margin-top:8px;border-top:1px solid var(--line);padding-top:7px}
+  #tip .korow{display:flex;align-items:baseline;gap:7px;line-height:1.5;font-size:11.5px;white-space:nowrap}
+  #tip .korow .kr{color:var(--gold);font-weight:600;flex:0 0 84px}
+  #tip .korow .ko{color:var(--ink);flex:1;overflow:hidden;text-overflow:ellipsis}
+  #tip .korow .kx{margin-left:auto;color:var(--muted)}
+  #tip .korow .pn{font-size:9.5px;color:var(--faint)}
 
   .site-footer{position:fixed;right:14px;bottom:12px;z-index:40;font-size:12px;color:var(--muted);
                background:rgba(12,20,48,.72);backdrop-filter:blur(6px);
@@ -258,8 +268,24 @@ function dayKey(utcIso){
 function team(code){ return (DATA.teams[code]) || null; }
 function label(code){
   const t=team(code);
-  if(t) return {flag:t.flag, name:t.name, tbd:false, code};
+  if(t) return {flag:t.flag, flag2:t.flag2, name:t.name, tbd:false, code};
   return {flag:"🛡️", name:code||"TBD", tbd:true, code:null}; // placeholder slots like "1A","W r32-1"
+}
+
+/* ---------- flags ---------- Emoji flags don't render on many Windows browsers, so draw
+   them as images from flagcdn.com. Prefer the API-provided code (t.flag2: 'za','gb-eng',…);
+   otherwise derive the ISO-2 from the emoji's regional-indicator code points. */
+function iso2FromEmoji(em){
+  if(!em) return null;
+  const cp=[...em].map(c=>c.codePointAt(0));
+  if(cp.length===2 && cp.every(c=>c>=0x1F1E6&&c<=0x1F1FF))
+    return String.fromCharCode(cp[0]-0x1F1E6+97, cp[1]-0x1F1E6+97); // -> lowercase iso2
+  return null;
+}
+function flagHTML(t){               // t: a label/team object with {flag, flag2}
+  const code=(t&&t.flag2)||iso2FromEmoji(t&&t.flag);
+  if(code) return `<img class="flagimg" src="https://flagcdn.com/w40/${code}.png" alt="" loading="lazy">`;
+  return `<span class="emojiflag">${(t&&t.flag)||'🛡️'}</span>`;
 }
 
 /* ---------- tooltip ---------- */
@@ -271,7 +297,7 @@ function showTip(code,x,y){
   let standing="—", played=0;
   const row=(DATA.groups[grp]||[]).find(r=>r.team===code);
   if(row){ played=row.p; standing=`${row.pts} pts · GD ${row.gd>=0?'+':''}${row.gd}`; }
-  tip.innerHTML=`<div class="th"><span class="fl">${t.flag}</span><span class="nm">${t.name}</span></div>
+  tip.innerHTML=`<div class="th"><span class="fl">${flagHTML(t)}</span><span class="nm">${t.name}</span></div>
     <div class="meta">
       <span class="chip">Group ${grp}</span><span class="chip">FIFA #${t.fifaRank}</span><br>
       <b>Record:</b> ${row?`${row.w}W ${row.d}D ${row.l}L`:'—'} (${played} pl)<br>
@@ -279,6 +305,39 @@ function showTip(code,x,y){
     </div>`;
   tip.style.left=Math.min(x+14, innerWidth-250)+'px';
   tip.style.top=Math.min(y+14, innerHeight-120)+'px';
+  tip.classList.add('show');
+}
+const KO_NAME={R32:'Round of 32',R16:'Round of 16',QF:'Quarter-final',SF:'Semi-final',F:'Final',TP:'Third place'};
+// tooltip for the knockout bracket: a team's run through the rounds, not their group table
+function showTipKO(code,x,y){
+  const t=team(code); if(!t) return;
+  let path='';
+  ['R32','R16','QF','SF','F','TP'].forEach(rk=>{
+    (DATA.knockout[rk]||[]).forEach(m=>{
+      if(m.home!==code && m.away!==code) return;
+      const isH=m.home===code, oppCode=isH?m.away:m.home, oppT=team(oppCode);
+      const opp=oppT?oppT.name:'TBD';
+      const done=m.status==='FT'||m.status==='FINISHED', live=m.status==='LIVE'||m.status==='IN_PLAY';
+      let res;
+      if(done && m.homeScore!=null){
+        const my=isH?m.homeScore:m.awayScore, ot=isH?m.awayScore:m.homeScore;
+        let pen='', won=my>ot;
+        if(my===ot && m.homePens!=null && m.awayPens!=null){
+          const myp=isH?m.homePens:m.awayPens, op=isH?m.awayPens:m.homePens;
+          pen=` <span class="pn">(${myp}-${op}p)</span>`; won=myp>op;
+        }
+        res=`${my}–${ot}${pen} <b style="color:${won?'var(--green)':'var(--red)'}">${won?'W':'L'}</b>`;
+      } else if(live){ res='<b style="color:var(--live)">LIVE</b>';
+      } else { res=`<span style="color:var(--faint)">${relDate(m.utc)||'TBD'}</span>`; }
+      path+=`<div class="korow"><span class="kr">${KO_NAME[rk]}</span><span class="ko">vs ${opp}</span><span class="kx">${res}</span></div>`;
+    });
+  });
+  if(!path) path='<div style="color:var(--faint)">Not in the knockout stage yet</div>';
+  tip.innerHTML=`<div class="th"><span class="fl">${flagHTML(t)}</span><span class="nm">${t.name}</span></div>
+    <div class="meta"><span class="chip">FIFA #${t.fifaRank}</span><span class="chip">Group ${t.group}</span>
+    <div class="kopath">${path}</div></div>`;
+  tip.style.left=Math.min(x+14, innerWidth-270)+'px';
+  tip.style.top=Math.min(y+14, innerHeight-180)+'px';
   tip.classList.add('show');
 }
 function hideTip(){ tip.classList.remove('show'); }
@@ -298,7 +357,7 @@ function renderGroups(){
       ${rows.map((r,i)=>{
         const t=team(r.team); const cls=i===0?'q1':i===1?'q2':i===2?'q3':'';
         return `<tr class="qual ${cls}" data-team="${r.team}">
-          <td class="tname"><span class="rank">${i+1}</span><span class="flag">${t.flag}</span>${t.name}</td>
+          <td class="tname"><span class="rank">${i+1}</span><span class="flag">${flagHTML(t)}</span>${t.name}</td>
           <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
           <td>${r.gd>0?'+':''}${r.gd}</td><td class="pts">${r.pts}</td></tr>`;
       }).join('')}
@@ -373,23 +432,29 @@ function matchCard(m, x, y, opts){
   const h=label(m.home), a=label(m.away);
   const done=m.status==='FT'||m.status==='FINISHED';
   const live=m.status==='LIVE'||m.status==='IN_PLAY';
+  const pens=done && m.homePens!=null && m.awayPens!=null && m.homePens!==m.awayPens;
   let hWin=false,aWin=false;
-  if(done && m.homeScore!=null){ hWin=m.homeScore>m.awayScore; aWin=m.awayScore>m.homeScore; }
+  if(done && m.homeScore!=null){
+    if(m.homeScore>m.awayScore) hWin=true;
+    else if(m.awayScore>m.homeScore) aWin=true;
+    else if(pens){ hWin=m.homePens>m.awayPens; aWin=m.awayPens>m.homePens; } // decided on penalties
+  }
   const sc=v=> (done||live)&&v!=null?v:'';
+  const pn=v=> pens&&v!=null?`<span class="pen">(${v})</span>`:''; // shootout score in parens
   const nm=s=> s.tbd?'TBD':(s.code||s.name);
   const node=document.createElement('div');
   node.className='match'+(live?' live':'')+(done?' done':'')+(opts.cls?' '+opts.cls:'');
   node.style.left=x+'px'; node.style.top=y+'px'; node.dataset.id=m.id;
   node.innerHTML=`
     <div class="row ${hWin?'win':done?'lose':''}" data-team="${h.code||''}">
-      <span class="flag">${h.flag}</span><span class="nm ${h.tbd?'tbd':''}">${nm(h)}</span><span class="sc">${sc(m.homeScore)}</span>
+      <span class="flag">${h.tbd?h.flag:flagHTML(h)}</span><span class="nm ${h.tbd?'tbd':''}">${nm(h)}</span><span class="sc">${pn(m.homePens)}${sc(m.homeScore)}</span>
     </div>
     <div class="row ${aWin?'win':done?'lose':''}" data-team="${a.code||''}">
-      <span class="flag">${a.flag}</span><span class="nm ${a.tbd?'tbd':''}">${nm(a)}</span><span class="sc">${sc(m.awayScore)}</span>
+      <span class="flag">${a.tbd?a.flag:flagHTML(a)}</span><span class="nm ${a.tbd?'tbd':''}">${nm(a)}</span><span class="sc">${pn(m.awayPens)}${sc(m.awayScore)}</span>
     </div>`;
   node.querySelectorAll('.row[data-team]').forEach(r=>{
     const c=r.dataset.team; if(!c)return;
-    r.addEventListener('mousemove',e=>showTip(c,e.clientX,e.clientY));
+    r.addEventListener('mousemove',e=>showTipKO(c,e.clientX,e.clientY));
     r.addEventListener('mouseleave',hideTip);
   });
   canvas.appendChild(node);
@@ -605,16 +670,39 @@ async function liveRefresh(force){
       if(!am)return;
       const hs=toInt(am.home_score),as_=toInt(am.away_score),st=stat(am);
       if(hs==null||!(st==='FT'||st==='LIVE'))return;
-      if(codeOf(am,'home')===slot.home){ slot.homeScore=hs; slot.awayScore=as_; }
-      else { slot.homeScore=as_; slot.awayScore=hs; }
+      const hp=toInt(am.home_penalty_score),ap=toInt(am.away_penalty_score);
+      if(codeOf(am,'home')===slot.home){ slot.homeScore=hs; slot.awayScore=as_; slot.homePens=hp; slot.awayPens=ap; }
+      else { slot.homeScore=as_; slot.awayScore=hs; slot.homePens=ap; slot.awayPens=hp; }
       slot.status=st;
+    });
+  });
+
+  // 2b) advance winners through the bracket (incl. penalty shootouts) so R16+ fill in
+  //     live, without waiting for the committed JSON to catch up
+  const decided={};   // slot id -> {W,L}
+  ['R32','R16','QF','SF','F','TP'].forEach(RK=>{
+    (DATA.knockout[RK]||[]).forEach(slot=>{
+      ['home','away'].forEach(side=>{
+        const mm=/^([WL]) (\S+)$/.exec(slot[side]);
+        if(mm&&decided[mm[2]]){ const c=decided[mm[2]][mm[1]]; if(c) slot[side]=c; }
+      });
+      if((slot.status==='FT'||slot.status==='FINISHED')&&slot.homeScore!=null&&slot.awayScore!=null
+          &&(slot.home in DATA.teams)&&(slot.away in DATA.teams)){
+        let w=null,l=null;
+        if(slot.homeScore>slot.awayScore){w=slot.home;l=slot.away;}
+        else if(slot.awayScore>slot.homeScore){w=slot.away;l=slot.home;}
+        else if(slot.homePens!=null&&slot.awayPens!=null&&slot.homePens!==slot.awayPens){
+          if(slot.homePens>slot.awayPens){w=slot.home;l=slot.away;} else {w=slot.away;l=slot.home;}
+        }
+        if(w) decided[slot.id]={W:w,L:l};
+      }
     });
   });
 
   // only re-render when something visible actually changed (keeps pan/zoom, avoids churn)
   const sig=JSON.stringify([
     Object.keys(DATA.groups).map(L=>DATA.groups[L].map(r=>[r.team,r.pts,r.gd])),
-    Object.keys(DATA.knockout).map(R=>(DATA.knockout[R]||[]).map(m=>[m.id,m.home,m.away,m.homeScore,m.awayScore,m.status]))
+    Object.keys(DATA.knockout).map(R=>(DATA.knockout[R]||[]).map(m=>[m.id,m.home,m.away,m.homeScore,m.awayScore,m.homePens,m.awayPens,m.status]))
   ]);
   document.getElementById('updated').textContent='Updated '+new Date().toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
   if(force||sig!==liveSig){ liveSig=sig; renderAll(); }

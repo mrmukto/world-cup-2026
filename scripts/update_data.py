@@ -107,6 +107,17 @@ def side_code(m, side, id2code):
     return None
 
 
+def enrich_team_flags(data, teams):
+    """Add a 'flag2' flagcdn slug (e.g. 'za', 'gb-eng') to each team from the API's flag
+    URL, so the site can render reliable flag images instead of emoji (which don't show on
+    many Windows browsers). Keeps the existing emoji 'flag' as a fallback."""
+    for t in teams:
+        code = (t.get("fifa_code") or "").strip()
+        m = re.search(r"/([a-z0-9-]+)\.png", t.get("flag") or "")
+        if code and m and code in data.get("teams", {}):
+            data["teams"][code]["flag2"] = m.group(1)
+
+
 def build_stadiums(stadiums):
     """id -> {venue, region}. Prefer the specific locality in parens, e.g.
     'Boston (Foxborough)' -> 'Foxborough', matching the site's short venue names."""
@@ -375,6 +386,11 @@ def rebuild_knockout(data, games, id2code, stadiums):
                 scored += 1
             else:
                 home_score = away_score = None
+            # penalty shootout result (knockout ties can't end level) — used both to show
+            # the score and to decide who advances when full-time is a draw
+            hp, ap = to_int(m.get("home_penalty_score")), to_int(m.get("away_penalty_score"))
+            if not (st == "FT" and home_score is not None and home_score == away_score):
+                hp = ap = None
             sid = str(m.get("stadium_id"))
             sinfo = stadiums.get(sid, {})
             fd = feeds_to.get(str(m.get("id")))
@@ -383,6 +399,7 @@ def rebuild_knockout(data, games, id2code, stadiums):
                 "utc": parse_kickoff_utc(m.get("local_date"), sid, sinfo.get("region")),
                 "home": home, "away": away,
                 "homeScore": home_score, "awayScore": away_score,
+                "homePens": hp, "awayPens": ap,
                 "venue": sinfo.get("venue", ""),
                 "status": st,
                 "feeds": fd[0] if fd else None,
@@ -408,6 +425,12 @@ def rebuild_knockout(data, games, id2code, stadiums):
                     results[s["id"]] = {"W": s["home"], "L": s["away"]}
                 elif s["awayScore"] > s["homeScore"]:
                     results[s["id"]] = {"W": s["away"], "L": s["home"]}
+                elif s["homePens"] is not None and s["awayPens"] is not None and s["homePens"] != s["awayPens"]:
+                    # level after extra time -> decided on penalties
+                    if s["homePens"] > s["awayPens"]:
+                        results[s["id"]] = {"W": s["home"], "L": s["away"]}
+                    else:
+                        results[s["id"]] = {"W": s["away"], "L": s["home"]}
 
     data["knockout"] = new_ko
     resolved = sum(1 for rk in new_ko for s in new_ko[rk]
@@ -434,6 +457,7 @@ def main():
 
     data = load_local()
     id2code = build_id2code(teams)
+    enrich_team_flags(data, teams)
     update_standings(data, games, id2code)
     rebuild_knockout(data, games, id2code, stadiums)
 
