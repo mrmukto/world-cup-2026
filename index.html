@@ -551,6 +551,75 @@ function renderAll(){
   renderGroups(); renderBracket();
 }
 
+/* ---------- live overlay: pull scores straight from the API in the browser ----------
+   GitHub's scheduled Action is best-effort (can lag hours), so the page also fetches
+   worldcup26.ir directly every 60s and overlays live standings + knockout scores on top
+   of the committed bracket structure. CORS is open on that API. Falls back silently to
+   the committed data if the API is unreachable. */
+const LIVE_API='https://worldcup26.ir';
+let liveSig=null;
+async function liveRefresh(force){
+  if(!DATA) return;
+  let T,G;
+  try{
+    const [tr,gr]=await Promise.all([fetch(LIVE_API+'/get/teams'),fetch(LIVE_API+'/get/games')]);
+    T=await tr.json(); G=await gr.json();
+  }catch(e){ return; }                       // offline / API hiccup -> keep committed data
+  const arr=x=>Array.isArray(x)?x:((x&&Object.values(x).find(Array.isArray))||[]);
+  T=arr(T); G=arr(G);
+  if(!T.length||!G.length) return;
+  const id2code={}; T.forEach(t=>{ if(t.fifa_code&&t.id!=null) id2code[String(t.id)]=String(t.fifa_code).trim(); });
+  const codeOf=(m,s)=>{ const tid=m[s+'_team_id']; return tid!=null?id2code[String(tid)]:undefined; };
+  const fin=m=>String(m.finished).trim().toUpperCase()==='TRUE';
+  const toInt=v=>{ const n=parseInt(v,10); return isNaN(n)?null:n; };
+  const stat=m=>{ if(fin(m))return 'FT'; const te=String(m.time_elapsed||'').trim().toLowerCase();
+                  return (te&&!['notstarted','not started','null',''].includes(te))?'LIVE':'SCHEDULED'; };
+
+  // 1) group standings — recompute from finished group matches
+  const tally={}; Object.keys(DATA.groups).forEach(L=>tally[L]={});
+  G.forEach(m=>{
+    if(m.type!=='group'||!fin(m))return;
+    const L=String(m.group||'').trim(); if(!(L in tally))return;
+    const h=codeOf(m,'home'),a=codeOf(m,'away'),hs=toInt(m.home_score),as_=toInt(m.away_score);
+    if(!h||!a||hs==null||as_==null)return;
+    [h,a].forEach(c=>{ if(!tally[L][c]) tally[L][c]={team:c,p:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0}; });
+    const th=tally[L][h],ta=tally[L][a];
+    th.p++;ta.p++; th.gf+=hs;th.ga+=as_;ta.gf+=as_;ta.ga+=hs;
+    if(hs>as_){th.w++;th.pts+=3;ta.l++;} else if(hs<as_){ta.w++;ta.pts+=3;th.l++;} else{th.d++;ta.d++;th.pts++;ta.pts++;}
+  });
+  Object.keys(tally).forEach(L=>{
+    const rows=Object.values(tally[L]); if(!rows.length)return;
+    rows.forEach(r=>r.gd=r.gf-r.ga);
+    rows.sort((x,y)=>y.pts-x.pts||y.gd-x.gd||y.gf-x.gf);
+    DATA.groups[L]=rows;
+  });
+
+  // 2) knockout — overlay live score + status onto slots whose teams are known
+  const koTypes={R32:'r32',R16:'r16',QF:'qf',SF:'sf',F:'final',TP:'third'};
+  const koByType={}; G.forEach(m=>{ (koByType[m.type]=koByType[m.type]||[]).push(m); });
+  Object.entries(koTypes).forEach(([RK,ty])=>{
+    (DATA.knockout[RK]||[]).forEach(slot=>{
+      if(!(slot.home in DATA.teams)||!(slot.away in DATA.teams))return;
+      const am=(koByType[ty]||[]).find(m=>{ const c1=codeOf(m,'home'),c2=codeOf(m,'away');
+        return (c1===slot.home&&c2===slot.away)||(c1===slot.away&&c2===slot.home); });
+      if(!am)return;
+      const hs=toInt(am.home_score),as_=toInt(am.away_score),st=stat(am);
+      if(hs==null||!(st==='FT'||st==='LIVE'))return;
+      if(codeOf(am,'home')===slot.home){ slot.homeScore=hs; slot.awayScore=as_; }
+      else { slot.homeScore=as_; slot.awayScore=hs; }
+      slot.status=st;
+    });
+  });
+
+  // only re-render when something visible actually changed (keeps pan/zoom, avoids churn)
+  const sig=JSON.stringify([
+    Object.keys(DATA.groups).map(L=>DATA.groups[L].map(r=>[r.team,r.pts,r.gd])),
+    Object.keys(DATA.knockout).map(R=>(DATA.knockout[R]||[]).map(m=>[m.id,m.home,m.away,m.homeScore,m.awayScore,m.status]))
+  ]);
+  document.getElementById('updated').textContent='Updated '+new Date().toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  if(force||sig!==liveSig){ liveSig=sig; renderAll(); }
+}
+
 /* ---------- load + auto-refresh ---------- */
 async function load(){
   try{
@@ -560,16 +629,19 @@ async function load(){
     const u=new Date(DATA.meta.lastUpdated);
     document.getElementById('updated').textContent='Updated '+u.toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
     renderAll();
-    // fit only on the first load; later 2-min refreshes keep the user's pan/zoom
+    // fit only on the first load; later refreshes keep the user's pan/zoom
     if(!bracketFitted && !document.getElementById('view-bracket').hidden) setTimeout(fitBracket,30);
+    liveRefresh(true);                 // immediately overlay live scores on top of committed data
   }catch(err){
     document.getElementById('loading').textContent='Could not load data/tournament.json — check the file path.';
     console.error(err);
   }
 }
 load();
-// re-pull JSON every 2 minutes so the page reflects the latest committed data without a manual refresh
-setInterval(load, 120000);
+// re-pull committed JSON every 5 min (picks up bracket-structure changes from the Action)…
+setInterval(load, 300000);
+// …but pull live scores straight from the API every 60s so the page never goes stale
+setInterval(liveRefresh, 60000);
 // keep the viewport filling the screen on resize, but preserve the user's current pan/zoom
 window.addEventListener('resize',()=>{ if(!document.getElementById('view-bracket').hidden) sizeViewport(); });
 </script>

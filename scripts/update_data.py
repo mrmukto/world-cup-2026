@@ -358,15 +358,15 @@ def rebuild_knockout(data, games, id2code, stadiums):
         rows = []
         for slot_id, m in round_slots[round_key]:
             hlab, alab = m.get("home_team_label"), m.get("away_team_label")
-            # Resolve group-stage slots (Winner/Runner-up/3rd Group) from our own standings
-            # FIRST: the API sometimes places a team that contradicts its own label
-            # (e.g. it put the Group G winner in a "Winner Group L" slot). The API team is
-            # only a fallback, used for knockout-progression slots it has already filled.
-            home = (resolve_group_label(hlab, winners, runners, thirds_assignment)
-                    or side_code(m, "home", id2code)
+            # Use the API's ACTUAL assigned team FIRST — it is the real fixture (who truly
+            # plays this match). Only when the API hasn't filled a slot yet do we resolve it
+            # predictively from our own standings + bracket labels (so the bracket fills in
+            # as soon as the groups finish, even while the API lags), then a placeholder.
+            home = (side_code(m, "home", id2code)
+                    or resolve_group_label(hlab, winners, runners, thirds_assignment)
                     or placeholder_from_label(hlab, id2slot))
-            away = (resolve_group_label(alab, winners, runners, thirds_assignment)
-                    or side_code(m, "away", id2code)
+            away = (side_code(m, "away", id2code)
+                    or resolve_group_label(alab, winners, runners, thirds_assignment)
                     or placeholder_from_label(alab, id2slot))
             st = status_of(m)
             hs, as_ = to_int(m.get("home_score")), to_int(m.get("away_score"))
