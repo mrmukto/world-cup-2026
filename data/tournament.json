@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-01T23:42:14+00:00",
+    "lastUpdated": "2026-07-02T01:53:15+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1710,12 +1710,12 @@
         "utc": "2026-07-02T00:00:00Z",
         "home": "USA",
         "away": "BIH",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 2,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Santa Clara",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "r16-4",
         "slot": "home"
       },
