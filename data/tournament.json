@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-03T21:20:37+00:00",
+    "lastUpdated": "2026-07-03T22:31:12+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1794,12 +1794,12 @@
         "utc": "2026-07-03T22:00:00Z",
         "home": "ARG",
         "away": "CPV",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 1,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Miami Gardens",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "r16-7",
         "slot": "home"
       },
