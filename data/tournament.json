@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-03T01:22:20+00:00",
+    "lastUpdated": "2026-07-03T05:34:04+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1822,12 +1822,12 @@
         "utc": "2026-07-03T03:00:00Z",
         "home": "SUI",
         "away": "ALG",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 2,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Vancouver",
-        "status": "SCHEDULED",
+        "status": "FT",
         "feeds": "r16-8",
         "slot": "home"
       },
@@ -1948,7 +1948,7 @@
       {
         "id": "r16-8",
         "utc": "2026-07-07T20:00:00Z",
-        "home": "W r32-15",
+        "home": "SUI",
         "away": "W r32-16",
         "homeScore": null,
         "awayScore": null,
