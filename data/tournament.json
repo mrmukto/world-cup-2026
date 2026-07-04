@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-04T16:29:25+00:00",
+    "lastUpdated": "2026-07-04T17:39:31+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1866,12 +1866,12 @@
         "utc": "2026-07-04T17:00:00Z",
         "home": "CAN",
         "away": "MAR",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Houston",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "qf-1",
         "slot": "away"
       },
