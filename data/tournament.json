@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-05T21:44:58+00:00",
+    "lastUpdated": "2026-07-05T22:44:25+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1908,12 +1908,12 @@
         "utc": "2026-07-05T20:00:00Z",
         "home": "BRA",
         "away": "NOR",
-        "homeScore": 0,
-        "awayScore": 1,
+        "homeScore": 1,
+        "awayScore": 2,
         "homePens": null,
         "awayPens": null,
         "venue": "East Rutherford",
-        "status": "LIVE",
+        "status": "FT",
         "feeds": "qf-3",
         "slot": "home"
       },
@@ -1992,7 +1992,7 @@
       {
         "id": "qf-3",
         "utc": "2026-07-11T21:00:00Z",
-        "home": "W r16-5",
+        "home": "NOR",
         "away": "W r16-6",
         "homeScore": null,
         "awayScore": null,
