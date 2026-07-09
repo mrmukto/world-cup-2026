@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-09T18:25:11+00:00",
+    "lastUpdated": "2026-07-09T20:27:13+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1966,12 +1966,12 @@
         "utc": "2026-07-09T20:00:00Z",
         "home": "FRA",
         "away": "MAR",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Foxborough",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "sf-1",
         "slot": "home"
       },
