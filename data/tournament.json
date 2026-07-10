@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-10T19:48:45+00:00",
+    "lastUpdated": "2026-07-10T20:56:53+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1980,7 +1980,7 @@
         "utc": "2026-07-10T19:00:00Z",
         "home": "ESP",
         "away": "BEL",
-        "homeScore": 1,
+        "homeScore": 2,
         "awayScore": 1,
         "homePens": null,
         "awayPens": null,
