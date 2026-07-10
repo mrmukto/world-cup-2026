@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-10T20:56:53+00:00",
+    "lastUpdated": "2026-07-10T22:13:29+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -1985,7 +1985,7 @@
         "homePens": null,
         "awayPens": null,
         "venue": "Inglewood",
-        "status": "LIVE",
+        "status": "FT",
         "feeds": "sf-1",
         "slot": "away"
       },
@@ -2023,7 +2023,7 @@
         "id": "sf-1",
         "utc": "2026-07-14T19:00:00Z",
         "home": "FRA",
-        "away": "W qf-2",
+        "away": "ESP",
         "homeScore": null,
         "awayScore": null,
         "homePens": null,
