@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-12T04:03:55+00:00",
+    "lastUpdated": "2026-07-12T06:44:23+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -2008,12 +2008,12 @@
         "utc": "2026-07-12T01:00:00Z",
         "home": "ARG",
         "away": "SUI",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 3,
+        "awayScore": 1,
         "homePens": null,
         "awayPens": null,
         "venue": "Kansas City",
-        "status": "SCHEDULED",
+        "status": "FT",
         "feeds": "sf-2",
         "slot": "away"
       }
@@ -2037,7 +2037,7 @@
         "id": "sf-2",
         "utc": "2026-07-15T19:00:00Z",
         "home": "ENG",
-        "away": "W qf-4",
+        "away": "ARG",
         "homeScore": null,
         "awayScore": null,
         "homePens": null,
