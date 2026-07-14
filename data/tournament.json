@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-14T18:44:35+00:00",
+    "lastUpdated": "2026-07-14T20:01:00+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -2024,12 +2024,12 @@
         "utc": "2026-07-14T19:00:00Z",
         "home": "FRA",
         "away": "ESP",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 1,
         "homePens": null,
         "awayPens": null,
         "venue": "Arlington",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "final",
         "slot": "home"
       },
