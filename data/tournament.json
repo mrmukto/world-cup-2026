@@ -2,7 +2,7 @@
   "meta": {
     "tournament": "FIFA World Cup 2026",
     "hosts": "USA · Canada · Mexico",
-    "lastUpdated": "2026-07-15T18:48:15+00:00",
+    "lastUpdated": "2026-07-15T19:58:03+00:00",
     "source": "worldcup26.ir (live, no key)"
   },
   "teams": {
@@ -2038,12 +2038,12 @@
         "utc": "2026-07-15T19:00:00Z",
         "home": "ENG",
         "away": "ARG",
-        "homeScore": null,
-        "awayScore": null,
+        "homeScore": 0,
+        "awayScore": 0,
         "homePens": null,
         "awayPens": null,
         "venue": "Atlanta",
-        "status": "SCHEDULED",
+        "status": "LIVE",
         "feeds": "final",
         "slot": "away"
       }
